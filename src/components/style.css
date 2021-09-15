@@ -1,0 +1,87 @@
+/* assign all elements border-box sizing */
+* {
+  box-sizing: border-box;
+}
+/* set body padding and margin to zero */
+body {
+  padding: 0;
+  margin: 0;
+}
+/* assign the calculator container:
+a width, backgroundColor and color */
+.calc {
+  width: 400px;
+  background-color: black;
+  color: white;
+}
+/* assign the screen section:
+a color, font-size, font, text alignation and padding */
+.screen {
+  color: white;
+  font-size: 40px;
+  font-family: "Courier New", Courier, monospace;
+  text-align: right;
+  padding: 20px 5px;
+}
+
+/* assign buttons: 
+a backgroundColor, color, height, width, border, border-radius,fontSize and change the cursor state*/
+.calc-button {
+  background-color: #d8d9db;
+  color: black;
+  height: 100px;
+  width: 24.5%;
+  border: none;
+  border-radius: 0;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+/* create hover effect that changes a button's background-color on hover */
+.calc-button:hover {
+  background-color: #ebebeb;
+}
+
+/* created a mouse click effect hat changes a button's background-color on hover  */
+.calc-button:active {
+  background-color: #bbbcbe;
+}
+
+/* I adjusted the clear button by doubling it's normal width */
+.double {
+  width: 49.7%;
+}
+
+/* I adjusted the zero button by tripling it's normal width */
+.triple {
+  width: 74.8%;
+}
+
+/* I styled the buttons at the right end of the calculator by assigning them backgroundColor and color */
+.calc-button:last-child {
+  background-color: #df974c;
+  color: white;
+}
+
+/* I created a hover effect that changes the buttons at the right end of the calculator to orange on hover */
+.calc-button:last-child:hover {
+  background-color: #dfb07e;
+}
+
+/* I created a mouse click effect that changes the buttons at the right end of the calculator to orange on click */
+.calc-button:last-child:active {
+  background-color: #dd8d37;
+}
+
+/* I styled the div where the buttons are stored */
+.calc-button-row {
+  display: flex;
+  align-content: stretch;
+  justify-content: space-between;
+  margin-bottom: 0.5%;
+}
+
+/* I removed the padding of the last item in the div where the buttons are stored */
+.calc-button-row:last-child {
+  padding-bottom: 0;
+}
