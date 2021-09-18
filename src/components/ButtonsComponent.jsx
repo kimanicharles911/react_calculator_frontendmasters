@@ -1,37 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const ButtonsComponent = ({ runningTotalProp, setRunningTotalProp, bufferProp, setBufferProp, previousOperatorProp, setPreviousOperatorProp, setScreenValueProp, screenValueProp }) => {
+const ButtonsComponent = ({ screenValueHandlerFuncProp }) => {
 
-  const handleButtonClick = (param) => {
-    isNaN(param) ? handleSymbol(param) : handleNumber(param);
-    console.log(`😜`, screenValueProp);
-    // setScreenValueProp(bufferProp);
-    console.log(`😜`, screenValueProp);
+  const [toggleEqualBtn, setToggleEqualBtn] = useState(false);
+  const [ runningTotal, setRunningTotal ] = useState(0);
+  console.log(`😜 Bail - runningTotal`, runningTotal);
+  // let buffer = "0";
+  const [buffer, setBuffer] = useState("0");
+  // let previousOperator = null;
+  const [previousOperator, setPreviousOperator] = useState(null);
+
+  const handleButtonClick = (value) => {
+    isNaN(value) ? handleSymbol(value) : handleNumber(value);
+    screenValueHandlerFuncProp(buffer);
+    /* screenValueHandlerFuncProp(value); */
+
   };
 
   const handleSymbol = (symbol) => {
     switch(symbol){
       case "C":
-        setScreenValueProp("0");
-        setRunningTotalProp(0);
+        setToggleEqualBtn(false);
+        setBuffer("0");
+        setRunningTotal(0);
         break;
       case "=":
-        if(previousOperatorProp === null){
+        if(previousOperator === null){
           return;
         }
-        flushOperation(parseInt(screenValueProp));
-        setPreviousOperatorProp(null);
-        console.log(`😜Former`, runningTotalProp);
-        setScreenValueProp(runningTotalProp);
-        setRunningTotalProp(0);
+        flushOperation(parseInt(buffer));
+        setPreviousOperator(null);
+        setToggleEqualBtn(true);
+        console.log(`😜 111111`, runningTotal);
+        setBuffer(runningTotal);
+        console.log(`😜 222222`, runningTotal);
+        // setRunningTotal(0);
         break;
       case "←":
-        screenValueProp.length === 1 ? setScreenValueProp("0") : setScreenValueProp(screenValueProp.substring(0, screenValueProp.length - 1));
+        buffer.length === 1 ? setBuffer("0") : setBuffer(buffer.substring(0, buffer.length - 1));
         break;
       case "+":
       case "-":
       case "×":
       case "÷":
+        setToggleEqualBtn(false);
         handleMath(symbol);
         break;      
     }
@@ -39,40 +51,58 @@ const ButtonsComponent = ({ runningTotalProp, setRunningTotalProp, bufferProp, s
 
   const handleMath = (symbol) => {
     /* This if statement is for ending the function if the condition is true. */
-    if(screenValueProp === "0"){
+    if(buffer === "0"){
       return;
     } 
-    const intBuffer = parseInt(screenValueProp);
-    
+    const intBuffer = parseInt(buffer);
   
-    console.log(`😜Bingo`, runningTotalProp);
-    runningTotalProp === 0 ? setRunningTotalProp(intBuffer) : flushOperation(intBuffer);
-    console.log(`😜Bingo`, runningTotalProp);
+    // runningTotal === 0 ? setRunningTotal(intBuffer) : flushOperation(intBuffer);
+
+    if(runningTotal === 0){
+      console.log(`😜 runningTotal is zero for now `, runningTotal);
+      setRunningTotal(intBuffer);
+    }else{
+      flushOperation(intBuffer);
+    }
+    console.log(`😜 Ronaldo - runningTotal`, runningTotal);
   
-    setPreviousOperatorProp(symbol);
+    setPreviousOperator(symbol);
+    console.log(`😜 new operator`, previousOperator);
   
-    setScreenValueProp("0");
+    setBuffer("0");
   };
 
   const flushOperation = (intBuffer) => {
-    if(previousOperatorProp === "+"){
-      setRunningTotalProp(runningTotalProp + intBuffer);
-    } else if(previousOperatorProp === "-"){
-      setRunningTotalProp(runningTotalProp - intBuffer);
-    } else if(previousOperatorProp === "×"){
-      setRunningTotalProp(runningTotalProp * intBuffer);
+    console.log(`😜 previousOperator`, previousOperator);
+    if(previousOperator === "+"){
+      setRunningTotal(runningTotal + intBuffer);
+    } else if(previousOperator === "-"){
+      setRunningTotal(runningTotal - intBuffer);
+    } else if(previousOperator === "×"){
+      setRunningTotal(runningTotal * intBuffer);
     } else {
-      setRunningTotalProp(runningTotalProp / intBuffer);
+      setRunningTotal(runningTotal / intBuffer);
     }
   };
 
   const handleNumber = (numberString) => {
-    screenValueProp === "0" ? setScreenValueProp(numberString) : setScreenValueProp(screenValueProp + numberString);
-    console.log(`😜C😜`, screenValueProp);
-    console.log(`😜CC😜`, typeof(screenValueProp));
-    console.log(`😜D😜`, screenValueProp);
-    console.log(`😜DD😜`, typeof(screenValueProp));
+    if(buffer === "0"){
+      console.log(`😜 buffer === "0"`, true);
+      setBuffer(numberString);
+    }else{
+      console.log(`😜 buffer NOT = "0"`, true);
+      setBuffer(buffer + numberString);
+    }
+    
   };
+
+  useEffect(() => {
+    if(toggleEqualBtn === false){
+      screenValueHandlerFuncProp(buffer);
+    }else{
+      screenValueHandlerFuncProp(runningTotal);
+    }
+  }, [toggleEqualBtn, buffer]);
 
   return(
     <section className="calc-buttons" onClick={ (event) => handleButtonClick(event.target.innerText)}>
