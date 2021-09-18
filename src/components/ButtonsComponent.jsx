@@ -14,7 +14,6 @@ const ButtonsComponent = ({ screenValueHandlerFuncProp }) => {
   I created the previousOperator state instantiating it with null. It stores the artithmetic operator clicked by the user before the click the second set of number(s). */
   const [toggleEqualBtn, setToggleEqualBtn] = useState(false);
   const [ runningTotal, setRunningTotal ] = useState(0);
-  console.log(`😜 Bail - runningTotal`, runningTotal);
   const [buffer, setBuffer] = useState("0");
   const [previousOperator, setPreviousOperator] = useState(null);
 
@@ -88,7 +87,6 @@ const ButtonsComponent = ({ screenValueHandlerFuncProp }) => {
     /* The value of the previousOperator is set to the symbol.
     The value of the buffer state is set to a string of zero */
     setPreviousOperator(symbol);
-    console.log(`😜 new operator`, previousOperator);
   
     setBuffer("0");
   };
